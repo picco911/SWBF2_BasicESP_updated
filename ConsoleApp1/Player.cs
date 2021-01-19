@@ -24,6 +24,7 @@ namespace BasicESP
         public bool InVehicle { get; private set; }
         public float Health { get; private set; }
         public float MaxHealth { get; private set; }
+        public float Height { get; set; }
         public bool IsDead
         {
             get
@@ -52,7 +53,7 @@ namespace BasicESP
 
             if (!RPM.IsValid(CPlayer.m_ControlledControllable)) { return; }
             CSoldier = RPM.Read<Frostbite.WSClientSoldierEntity>(CPlayer.m_ControlledControllable);
-
+            //var h = RPM.Read<float>(CPlayer.m_Height);
             Name = RPM.ReadString(CPlayer.m_Name, 32);
             TeamId = CPlayer.m_TeamId;
 
@@ -69,6 +70,7 @@ namespace BasicESP
 
             if (!InVehicle)
             {
+                Height = CSoldier.m_Height;
                 Pose = (Frostbite.PoseType)CSoldier.m_Pose;
 
                 IsVisible = !(CSoldier.m_IsOccluded == 1);

@@ -315,7 +315,7 @@ namespace BasicESP
             public ulong m_SoldierPrediction; //0x758
 
             [FieldOffset(1136)]
-            public ulong m_Height; //0x470
+            public ulong m_Height; //0x0470
         }
 
         [StructLayout(LayoutKind.Explicit)]

@@ -153,46 +153,64 @@ namespace BasicESP
 
                     foreach (Player player in gameManager.AllPlayers)
                     {
-                        if (!player.IsDead)
+                        if (player.Distance < 800)
                         {
-                            if (player.IsVisible)
+                            if (!player.IsDead)
                             {
-                                if (player.MaxHealth < 400) brush = yellowBrush;
-                                else brush = heroVisBrush;
-                            }
-                            else
-                            {
-                                if (player.MaxHealth < 400) brush = redBrush;
-                                else brush = heroBrush;
-                            }
+                                if (player.IsVisible)
+                                {
+                                    if (player.MaxHealth < 400) brush = yellowBrush;
+                                    else brush = heroVisBrush;
+                                }
+                                else
+                                {
+                                    if (player.MaxHealth < 400) brush = redBrush;
+                                    else brush = heroBrush;
+                                }
 
-                            if (!player.InVehicle)
-                            {
-                                DrawAABB(player.TransformAABB, brush);
-                            }
-                            else
-                            {
-                                brush = vehicleBrush;
+                                if (!player.InVehicle)
+                                {
+                                    //DrawAABB(player.TransformAABB, brush);
+                                    //Vector3 head = player.Position;
+                                    //head.Y += 20 + (float)0.25;
+                                    //Vector3 foot = player.Position;
+                                    //var heightoffset = Distance3D(foot, head);
+                                    //float factor = ((float)(heightoffset / 5));
 
-                                DrawAABB(player.TransformAABB, brush);
-                            }
+                                    //Vector3 m2 = new Vector3(head.X - factor, head.Y, 0);
+                                    //Vector3 m1 = new Vector3(head.X + factor, head.Y, 0);
+                                    //Vector3 m3 = new Vector3(foot.X - factor, foot.Y, 0);
+                                    //Vector3 m4 = new Vector3(foot.X + factor, foot.Y, 0);
 
-                            var name = string.Format("{0}[{1}]",player.Name, player.Health);
-                            var dist = $"{(int)player.Distance}m";
-                           
+                                    //d2d.DrawLine(m1.X, m1.Y, m2.X, m2.Y, 1, brush);
+                                    //d2d.DrawLine(m2.X, m2.Y, m3.X, m3.Y, 1, brush);
+                                    //d2d.DrawLine(m3.X, m3.Y, m4.X, m4.Y, 1, brush);
+                                    //d2d.DrawLine(m4.X, m4.Y, m1.X, m1.Y, 1, brush);
+                                }
+                                else
+                                {
+                                    brush = vehicleBrush;
 
-                            Vector3 textPos = new Vector3(player.Position.X, player.Position.Y, player.Position.Z);
-                            if (gameManager.WorldToScreen(textPos, out textPos))
-                            {
-                                var textPosX = textPos.X - ((name.Length * font.FontSize) / 4);
-                                d2d.DrawText(name, textPosX - 1, textPos.Y - 1, font, blackBrush);
-                                d2d.DrawText(name, textPosX, textPos.Y, font, whiteBrush);
+                                    DrawAABB(player.TransformAABB, brush);
+                                }
 
-                                textPosX = textPos.X - ((dist.Length * font.FontSize) / 4);
-                                var textPosY = textPos.Y + font.FontSize;
+                                var name = string.Format("{0}[{1}]", player.Name, player.Health);
+                                var dist = $"{(int)player.Distance}m";
 
-                                d2d.DrawText(dist, textPosX - 1, textPosY - 1, font, blackBrush);
-                                d2d.DrawText(dist, textPosX, textPosY, font, whiteBrush);
+
+                                Vector3 textPos = new Vector3(player.Position.X, player.Position.Y, player.Position.Z);
+                                if (gameManager.WorldToScreen(textPos, out textPos))
+                                {
+                                    var textPosX = textPos.X - ((name.Length * font.FontSize) / 4);
+                                    d2d.DrawText(name, textPosX - 1, textPos.Y - 1, font, blackBrush);
+                                    d2d.DrawText(name, textPosX, textPos.Y, font, whiteBrush);
+
+                                    textPosX = textPos.X - ((dist.Length * font.FontSize) / 4);
+                                    var textPosY = textPos.Y + font.FontSize;
+
+                                    d2d.DrawText(dist, textPosX - 1, textPosY - 1, font, blackBrush);
+                                    d2d.DrawText(dist, textPosX, textPosY, font, whiteBrush);
+                                }
                             }
                         }
                     }
@@ -206,6 +224,13 @@ namespace BasicESP
             Environment.Exit(0);
         }
 
+        double Distance3D(Vector3 v1, Vector3 v2)
+        {
+            float x_d = (v2.X - v1.X);
+            float y_d = (v2.Y - v1.Y);
+            float z_d = (v2.Z - v1.Z);
+            return Math.Sqrt((x_d * x_d) + (y_d * y_d) + (z_d * z_d));
+        }
         private void DrawAABB(Frostbite.TransformAABBStruct TransformAABB, Direct2DBrush brush)
         {
             Vector3 pos = TransformAABB.Matrix.TranslationVector;
