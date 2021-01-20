@@ -52,10 +52,10 @@ namespace BasicESP
             if (CPlayer.x003C != 255) { return; }
 
             if (!RPM.IsValid(CPlayer.m_ControlledControllable)) { return; }
-            CSoldier = RPM.Read<Frostbite.WSClientSoldierEntity>(CPlayer.m_ControlledControllable);
-            //var h = RPM.Read<float>(CPlayer.m_Height);
+            CSoldier = RPM.Read<Frostbite.WSClientSoldierEntity>(CPlayer.m_ControlledControllable);           
             Name = RPM.ReadString(CPlayer.m_Name, 32);
             TeamId = CPlayer.m_TeamId;
+            Height = CSoldier.m_HeightOffset;
 
             if (RPM.IsValid(CPlayer.m_AttachedControllable))
             {
@@ -70,31 +70,28 @@ namespace BasicESP
 
             if (!InVehicle)
             {
-                Height = CSoldier.m_Height;
+                Height = CSoldier.m_HeightOffset;
                 Pose = (Frostbite.PoseType)CSoldier.m_Pose;
-
                 IsVisible = !(CSoldier.m_IsOccluded == 1);
                 IsSprinting = (CSoldier.m_IsSprinting == 1);
-
                 Pitch = CSoldier.m_PitchRads;
                 Yaw = CSoldier.m_YawRads;
-
                 Velocity = (Vector3)CSoldierReplication.m_Velocity;
-                
+                Position = new Vector3() { X = CSoldierReplication.m_Position.X, Y = CSoldierReplication.m_Position.Y, Z = CSoldierReplication.m_Position.Z };
 
                 if (!RPM.IsValid(CSoldier.m_HealthComponent)) { return; }
                 CHealthComponent = RPM.Read<Frostbite.HealthComponent>(CSoldier.m_HealthComponent);
 
                 TransformAABB.AABB.Min = new Vector4(-0.350000f, 0.000000f, -0.350000f, 0);
                 TransformAABB.AABB.Max = new Vector4(0.350000f, (CSoldier.m_HeadboneOffsetY + 0.3f), 0.350000f, 0);
-
+                Position = new Vector3() { X = CSoldierReplication.m_Position.X, Y = CSoldierReplication.m_Position.Y, Z = CSoldierReplication.m_Position.Z } ;  
                 EntityComponents = CSoldier.m_EntityComponents;
             }
             else
             {
                 if (!RPM.IsValid(CVehicle.m_HealthComponent)) { return; }
                 CHealthComponent = RPM.Read<Frostbite.HealthComponent>(CVehicle.m_HealthComponent);
-                Velocity = (Vector3)CVehicle.m_Velocity;
+                Velocity = (Vector3)CVehicle.m_Velocity;                
 
                 TransformAABB.AABB.Min = CVehicle.m_MinAABB;
                 TransformAABB.AABB.Max = CVehicle.m_MaxAABB;
@@ -121,9 +118,8 @@ namespace BasicESP
 
             //    TransformAABB.Matrix = RPM.Read<Matrix>(EntityComponents + pTrans + 0x10);
             //}
-            var pos = new Vector3() { X = CSoldierReplication.m_Position.X, Y = CSoldierReplication.m_Position.Y, Z = CSoldierReplication.m_Position.Z } ;
-   
-            Position = pos;//TransformAABB.Matrix.TranslationVector;
+            
+            
 
             IsValidPlayer = true;
         }

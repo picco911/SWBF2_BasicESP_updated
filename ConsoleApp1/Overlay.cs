@@ -26,7 +26,7 @@ namespace BasicESP
         private bool OPTIONS_AA = false;
         private bool OPTIONS_VSync = false;
         private bool OPTIONS_ShowFPS = true;
-       
+
 
         public Overlay(Process gameProcess)
         {
@@ -171,30 +171,30 @@ namespace BasicESP
                                 if (!player.InVehicle)
                                 {
                                     //DrawAABB(player.TransformAABB, brush);
-                                    //Vector3 head = player.Position;
-                                    //head.Y += 20 + (float)0.25;
-                                    //Vector3 foot = player.Position;
-                                    //var heightoffset = Distance3D(foot, head);
-                                    //float factor = ((float)(heightoffset / 5));
-
-                                    //Vector3 m2 = new Vector3(head.X - factor, head.Y, 0);
-                                    //Vector3 m1 = new Vector3(head.X + factor, head.Y, 0);
-                                    //Vector3 m3 = new Vector3(foot.X - factor, foot.Y, 0);
-                                    //Vector3 m4 = new Vector3(foot.X + factor, foot.Y, 0);
-
-                                    //d2d.DrawLine(m1.X, m1.Y, m2.X, m2.Y, 1, brush);
-                                    //d2d.DrawLine(m2.X, m2.Y, m3.X, m3.Y, 1, brush);
-                                    //d2d.DrawLine(m3.X, m3.Y, m4.X, m4.Y, 1, brush);
-                                    //d2d.DrawLine(m4.X, m4.Y, m1.X, m1.Y, 1, brush);
+                                    Vector3 head = player.Position;
+                                    head.Y += player.Height + (float)0.25;
+                                    Vector3 foot = player.Position;
+                                    var heightoffset = Distance3D(foot, head);
+                                    float factor = ((float)(heightoffset) * 2.5f);
+                                    if (gameManager.WorldToScreen(head, out head) && gameManager.WorldToScreen(foot, out foot))
+                                    {                                      
+                                        float height = Math.Abs(Math.Abs(head.Y) - Math.Abs(foot.Y));
+                                        float width = height / 2.6f;
+                                        float boxMiddle = foot.X - (width / 2);                
+                                        d2d.DrawRectangle(boxMiddle, head.Y, width, height, 1, brush);
+                    
+                                        float perc = (player.Health / player.MaxHealth);
+                                        var healthBrush = d2d.CreateBrush(1 - perc, perc, 0, 255);
+                                        d2d.FillRectangle(head.X - (width / 2.0f) - 4, foot.Y - height, 3,height, healthBrush);                     
+                                    }
                                 }
                                 else
                                 {
                                     brush = vehicleBrush;
-
                                     DrawAABB(player.TransformAABB, brush);
                                 }
 
-                                var name = string.Format("{0}[{1}]", player.Name, player.Health);
+                                var name = string.Format("{0}", player.Name);
                                 var dist = $"{(int)player.Distance}m";
 
 
