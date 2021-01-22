@@ -164,7 +164,7 @@ namespace BasicESP
                                 }
                                 else
                                 {
-                                    if (player.MaxHealth < 400) brush = redBrush;
+                                    if (player.MaxHealth < 400) brush = whiteBrush;
                                     else brush = heroBrush;
                                 }
 

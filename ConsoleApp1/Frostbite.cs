@@ -302,8 +302,8 @@ namespace BasicESP
             [FieldOffset(2536)]
             public byte m_IsSprinting; //0x09E8
 
-            [FieldOffset(2552)]
-            public byte m_IsOccluded; //0x09F8
+            [FieldOffset(2648)]
+            public byte m_IsOccluded; //0x0A58
 
             [FieldOffset(2792)]
             public ulong m_WSSoldierCustomizationGameplayAsset; //0x0AE8
